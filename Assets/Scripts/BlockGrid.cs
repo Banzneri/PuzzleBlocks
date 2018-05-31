@@ -13,7 +13,8 @@ public class BlockGrid : MonoBehaviour {
 	private float _height;
 	private bool[,] _gridSpace;
 
-	private Vector2 _currentHoveredCoord = Vector2.zero;
+	private Vector2 _currentActiveCoord = Vector2.zero;
+	private Vector2 _currentHoverCoord = Vector2.zero;
 
 	void Start () {
 		_width = transform.lossyScale.x / _gridX * 10;
@@ -33,7 +34,7 @@ public class BlockGrid : MonoBehaviour {
 			for (int x = 0; x < _gridX; x++)
 			{
 				Gizmos.color = Color.red;
-				if (x == (int)_currentHoveredCoord.x && y == (int)_currentHoveredCoord.y)
+				if (x == (int)_currentActiveCoord.x && y == (int)_currentActiveCoord.y)
 				{
 					Gizmos.color = Color.green;
 				}
@@ -62,17 +63,17 @@ public class BlockGrid : MonoBehaviour {
 	private void HandleClicking()
 	{
 		RaycastHit hit;
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButton(0))
         {
             if(GetComponent<Collider>().Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
 			{
-				_currentHoveredCoord = GetLocationFromIndex(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y));
-				if (_gridSpace[(int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y])
+				_currentActiveCoord = GetLocationFromIndex(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y));
+				if (_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y])
 				{
 					return;
 				}
-				_gridSpace[(int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y] = true;
-				Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y), Quaternion.Euler(Vector3.zero));
+				_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y] = true;
+				Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
 			}
         }
 	}
