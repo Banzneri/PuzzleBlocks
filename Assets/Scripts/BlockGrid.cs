@@ -5,16 +5,20 @@ using UnityEngine;
 public class BlockGrid : MonoBehaviour {
 	[SerializeField] private int _gridX;
 	[SerializeField] private int _gridY;
+	[SerializeField] private Transform _startBlockTransform;
+	[SerializeField] private Transform _endBlockTransform;
 	[SerializeField] private GameObject _basicBlockPrefab;
 
 	private float _width;
 	private float _height;
+	private bool[,] _gridSpace;
 
 	private Vector2 _currentHoveredCoord = Vector2.zero;
 
 	void Start () {
 		_width = transform.lossyScale.x / _gridX * 10;
 		_height = transform.lossyScale.z / _gridY * 10;
+		_gridSpace = new bool[_gridX, _gridY];
 	}
 	
 	void Update () {
@@ -31,7 +35,6 @@ public class BlockGrid : MonoBehaviour {
 				Gizmos.color = Color.red;
 				if (x == (int)_currentHoveredCoord.x && y == (int)_currentHoveredCoord.y)
 				{
-					Debug.Log("Yes");
 					Gizmos.color = Color.green;
 				}
 				float width = transform.lossyScale.x / _gridX * 10;
@@ -64,10 +67,13 @@ public class BlockGrid : MonoBehaviour {
             if(GetComponent<Collider>().Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
 			{
 				_currentHoveredCoord = GetLocationFromIndex(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y));
+				if (_gridSpace[(int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y])
+				{
+					return;
+				}
+				_gridSpace[(int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y] = true;
 				Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentHoveredCoord.x, (int)_currentHoveredCoord.y), Quaternion.Euler(Vector3.zero));
 			}
-			//Debug.Log(hit.point.x + " " + hit.point.y);
-			Debug.Log(_currentHoveredCoord);
         }
 	}
 }
