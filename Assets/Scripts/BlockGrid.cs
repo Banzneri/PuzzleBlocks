@@ -8,6 +8,7 @@ public class BlockGrid : MonoBehaviour {
 	[SerializeField] private Transform _startBlockTransform;
 	[SerializeField] private Transform _endBlockTransform;
 	[SerializeField] private GameObject _basicBlockPrefab;
+	[SerializeField] private GameObject _hoverBlock;
 
 	private float _width;
 	private float _height;
@@ -20,6 +21,7 @@ public class BlockGrid : MonoBehaviour {
 		_width = transform.lossyScale.x / _gridX * 10;
 		_height = transform.lossyScale.z / _gridY * 10;
 		_gridSpace = new bool[_gridX, _gridY];
+		_hoverBlock.SetActive(false);
 	}
 	
 	void Update () {
@@ -29,6 +31,7 @@ public class BlockGrid : MonoBehaviour {
 	private void OnDrawGizmos() {
 		_gridX = 20;
 		_gridY = 20;
+		
 		for (int y = 0; y < _gridY; y++)
 		{
 			for (int x = 0; x < _gridX; x++)
@@ -63,18 +66,25 @@ public class BlockGrid : MonoBehaviour {
 	private void HandleClicking()
 	{
 		RaycastHit hit;
-		if (Input.GetMouseButton(0))
-        {
-            if(GetComponent<Collider>().Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
+
+		if (GetComponent<Collider>().Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
+		{
+			_currentActiveCoord = GetLocationFromIndex(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y));
+
+			if (Input.GetMouseButton(0) && !_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y])
 			{
-				_currentActiveCoord = GetLocationFromIndex(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.y));
-				if (_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y])
-				{
-					return;
-				}
 				_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y] = true;
 				Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
 			}
-        }
+			else
+			{
+				_hoverBlock.SetActive(true);
+				_hoverBlock.transform.position = GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y);
+			}
+		}
+		else
+		{
+			_hoverBlock.SetActive(false);
+		}
 	}
 }

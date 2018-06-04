@@ -5,25 +5,30 @@ using UnityEngine;
 public class MyCharacterController : MonoBehaviour {
 	[SerializeField] private float _moveSpeed = 1;
 	[SerializeField] private float _fallSpeed = 100;
-	// Use this for initialization
+	[SerializeField] private float _jumpSpeed = 1;
+	[SerializeField] private float _jumpTime = 0.8f;
+
+	private bool _jumping = false;
+	
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		Move();
 		Fall();
+		Jump();
 	}
 
 	void Move()
 	{
 		Vector3 newPos = transform.position;
 		float smooth = 1f;
+
 		if (Input.GetKey(KeyCode.D))
 		{
 			Vector3 rot = transform.rotation.eulerAngles;
- 			rot = new Vector3(rot.x,90,rot.z);
+ 			rot.y = 90;
 			transform.rotation = Quaternion.Euler(rot);
 			if (HitWall())
 			{
@@ -34,7 +39,7 @@ public class MyCharacterController : MonoBehaviour {
 		else if (Input.GetKey(KeyCode.A))
 		{
 			Vector3 rot = transform.rotation.eulerAngles;
- 			rot = new Vector3(rot.x,-90,rot.z);
+ 			rot.y = -90;
  			transform.rotation = Quaternion.Euler(rot);
 			if (HitWall())
 			{
@@ -42,6 +47,7 @@ public class MyCharacterController : MonoBehaviour {
 			}
 			newPos.x -= _moveSpeed * Time.deltaTime;
 		}
+
 		transform.position = newPos;
 	}
 
@@ -70,5 +76,27 @@ public class MyCharacterController : MonoBehaviour {
 		Debug.DrawRay(transform.position, dir * dist, Color.green);
 
 		return Physics.Raycast(transform.position, dir, out hit, dist);
+	}
+
+	void Jump()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			StartCoroutine(DoJump());
+		}
+
+		if (_jumping)
+		{
+			Vector3 pos = transform.position;
+			pos.y += _jumpSpeed * Time.deltaTime;
+			transform.position = pos;
+		}
+	}
+
+	IEnumerator DoJump()
+	{
+		_jumping = true;
+		yield return new WaitForSeconds(_jumpTime);
+		_jumping = false;
 	}
 }
