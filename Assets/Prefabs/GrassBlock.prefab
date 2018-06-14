@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 33365255327742928}
   - component: {fileID: 65608703515993252}
   - component: {fileID: 23119154099447516}
-  - component: {fileID: 114013735653671442}
+  - component: {fileID: 114619901401833116}
   m_Layer: 0
-  m_Name: BasicBlock
+  m_Name: GrassBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 1b6594843b0903e41a3278c4b9532d65, type: 2}
+  - {fileID: 2100000, guid: c3d45016598d21647afee72e17100395, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114013735653671442
+--- !u!114 &114619901401833116
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,8 +104,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1640011035065996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3950e6f36efefb1408c155b344adbc04, type: 3}
+  m_Script: {fileID: 11500000, guid: ae9061ed2dd7e9a4cb0fdeb22f68d09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _material: {fileID: 2100000, guid: 1b6594843b0903e41a3278c4b9532d65, type: 2}
+  _material: {fileID: 2100000, guid: 70de98e42bbdb2c408b7a97138467a57, type: 2}
   _blockType: 0

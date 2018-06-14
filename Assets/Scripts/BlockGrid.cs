@@ -8,7 +8,13 @@ public class BlockGrid : MonoBehaviour {
 	[SerializeField] private Transform _startBlockTransform;
 	[SerializeField] private Transform _endBlockTransform;
 	[SerializeField] private GameObject _basicBlockPrefab;
+	[SerializeField] private GameObject _woodBlockPrefab;
+	[SerializeField] private GameObject _goldBlockPrefab;
+	[SerializeField] private GameObject _grassBlockPrefab;
 	[SerializeField] private GameObject _hoverBlock;
+	[SerializeField] private BlockPanel _blockPanel;
+
+	[HideInInspector] public bool _canPlace = true;
 
 	private float _width;
 	private float _height;
@@ -65,6 +71,10 @@ public class BlockGrid : MonoBehaviour {
 
 	private void HandleClicking()
 	{
+		if (!_canPlace)
+		{
+			return;
+		}
 		RaycastHit hit;
 
 		if (GetComponent<Collider>().Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
@@ -74,7 +84,25 @@ public class BlockGrid : MonoBehaviour {
 			if (Input.GetMouseButton(0) && !_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y])
 			{
 				_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y] = true;
-				Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
+				switch (_blockPanel._currentBlockType)
+				{
+					case Block.BlockType.Basic: 
+						Instantiate(_basicBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
+						break;
+					case Block.BlockType.Wood:
+						Instantiate(_woodBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
+						break;
+					case Block.BlockType.Gold:
+						Instantiate(_goldBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
+						break;
+					case Block.BlockType.Grass:
+						Instantiate(_grassBlockPrefab, GetCenterFromIndex((int)_currentActiveCoord.x, (int)_currentActiveCoord.y), Quaternion.Euler(Vector3.zero));
+						break;
+				}
+			}
+			else if (Input.GetMouseButton(1) && _gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y])
+			{
+				_gridSpace[(int)_currentActiveCoord.x, (int)_currentActiveCoord.y] = false;
 			}
 			else
 			{
