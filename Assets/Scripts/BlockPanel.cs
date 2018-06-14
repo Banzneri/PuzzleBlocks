@@ -10,6 +10,13 @@ public class BlockPanel : MonoBehaviour {
 	public Material _basicMaterial;
 	public Material _goldMaterial;
 	public Material _grassMaterial;
+	public GameObject _hoverBorder;
+
+	[SerializeField] private GameObject _basicBlock;
+	[SerializeField] private GameObject _woodBlock;
+	[SerializeField] private GameObject _goldBlock;
+	[SerializeField] private GameObject _grassBlock;
+	[SerializeField] private GameObject _activeBorder;
 
 	[HideInInspector]
 	public Block.BlockType _currentBlockType = Block.BlockType.Basic;
@@ -20,6 +27,7 @@ public class BlockPanel : MonoBehaviour {
 		Color color = _basicMaterial.color;
 		color.a = _hoverBlockMaterial.color.a;
 		_hoverBlockMaterial.color = color;
+		_activeBorder.transform.position = _basicBlock.transform.position;
 	}
 
 	public void SetCurrentBlockWood()
@@ -28,6 +36,7 @@ public class BlockPanel : MonoBehaviour {
 		Color color = _woodMaterial.color;
 		color.a = _hoverBlockMaterial.color.a;
 		_hoverBlockMaterial.color = color;
+		_activeBorder.transform.position = _woodBlock.transform.position;
 	}
 
 	public void SetCurrentBlockGold()
@@ -36,6 +45,7 @@ public class BlockPanel : MonoBehaviour {
 		Color color = _goldMaterial.color;
 		color.a = _hoverBlockMaterial.color.a;
 		_hoverBlockMaterial.color = color;
+		_activeBorder.transform.position = _goldBlock.transform.position;
 	}
 
 	public void SetCurrentBlockGrass()
@@ -44,5 +54,11 @@ public class BlockPanel : MonoBehaviour {
 		Color color = _grassMaterial.color;
 		color.a = _hoverBlockMaterial.color.a;
 		_hoverBlockMaterial.color = color;
+		_activeBorder.transform.position = _grassBlock.transform.position;
+	}
+
+	public void SetHoverOnBlock()
+	{
+
 	}
 }

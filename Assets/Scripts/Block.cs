@@ -19,15 +19,4 @@ public abstract class Block : MonoBehaviour {
         Grass,
         Dirt
     }
-
-    private void OnMouseOver() {
-        if (Input.GetMouseButton(1))
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnMouseEnter() {
-        
-    }
 }
